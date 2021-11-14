@@ -15,16 +15,16 @@ source env/bin/activate
 ```
 
 ## Commands
-t!info           - The car's current information? h*ck yeah!
-t!drive          - [LOCATION] to take us places.
-t!vote anarchy   - Place a vote to set waypoints with anarchy.
-t!vote democracy - Place a vote to set waypoints with democracy.
-t!vote average   - Place a vote to set waypoints with averages.
+* t!info           - The car's current information? h*ck yeah!
+* t!drive          - [LOCATION] to take us places.
+* t!vote anarchy   - Place a vote to set waypoints with anarchy.
+* t!vote democracy - Place a vote to set waypoints with democracy.
+* t!vote average   - Place a vote to set waypoints with averages.
 
 ## Waypoint modes
-Anarchy     - The first person to !drive after the timer reaches 0 will be pushed to the car.
-Democracy   - The location that has the most votes when the timer reaches 0 will be pushed to the car.
-Average     - The average of all locations will be pushed to the car.
+* Anarchy     - The first person to !drive after the timer reaches 0 will be pushed to the car.
+* Democracy   - The location that has the most votes when the timer reaches 0 will be pushed to the car.
+* Average     - The average of all locations will be pushed to the car.
 
 ## Testimonial
 * ![](https://i.imgur.com/P9YJtRV.jpg)
