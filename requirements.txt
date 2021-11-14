@@ -1,0 +1,8 @@
+redis
+hiredis
+https://github.com/tdorssers/TeslaPy/archive/refs/heads/master.zip
+pypresence
+nextcord
+Authlib
+httpx
+aioredis
