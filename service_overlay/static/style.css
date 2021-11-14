@@ -8,7 +8,8 @@ body {
     padding: 25px;
     text-align: center;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
+    border-bottom: rgba(255, 255, 255, 0.75) 1px solid;
 }
 
 .info .speed,
@@ -17,7 +18,7 @@ body {
 }
 
 .speedinfo {
-    width: 100px;
+    width: 200px;
 }
 
 .info .shifter {
@@ -31,7 +32,7 @@ body {
 
 .info .shifter .active {
     font-weight: bold;
-    color: pink;
+    color: #004cff;
 }
 
 .info .shifter li {
@@ -52,6 +53,8 @@ body {
     list-style: none;
     padding: 0;
     margin-left: 25px;
+    display: inline-block;
+    width: 100%;
 }
 
 .chat li {
