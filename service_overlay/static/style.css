@@ -72,3 +72,11 @@ p.title {
     object-fit: cover;
     object-position: 20% 10%; /* try 20px 10px */
 }
+
+#battery {
+    align-self: end;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 10px;
+}

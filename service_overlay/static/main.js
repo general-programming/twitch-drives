@@ -1,4 +1,5 @@
 const speedElement = document.getElementById("speed");
+const batteryElement = document.getElementById("battery");
 const SHIFTER_MAP = {
     P: "park",
     R: "reverse",
@@ -22,6 +23,11 @@ const parseEvent = (event) => {
     if (event.speed) {
         console.log("speed", event.speed);
         speedElement.textContent = event.speed;
+    }
+
+    if (event.battery) {
+        console.log("battery", event.battery);
+        batteryElement.textContent = `${event.battery}%`;
     }
 
     if (event.shift_state) {
