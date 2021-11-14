@@ -14,7 +14,7 @@ body {
 .info .speed,
 .info .unit {
     margin: 0;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .speedinfo {
@@ -107,8 +107,4 @@ p.title {
     background-color: grey;
     height: 4px;
     display: inline-block;
-}
-
-#map {
-    display: none;
 }
