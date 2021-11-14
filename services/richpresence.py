@@ -1,7 +1,7 @@
 import os
 import time
+
 import teslapy
-import time
 from pypresence import Presence
 
 client_id = '907891789569073183'

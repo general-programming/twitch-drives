@@ -1,18 +1,19 @@
 import logging
 import os
-from unicodedata import name
-import nextcord
-import teslapy
-import redis
 import time
+from unicodedata import name
 
+import nextcord
+import redis
+import teslapy
 from nextcord.ext import commands
+
+from twitchdrives.api.tesla_sync import get_tesla
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
-tesla = teslapy.Tesla(os.environ["TESLA_EMAIL"])
+tesla = get_tesla()
 car = tesla.vehicle_list()[0]
-# r = redis.Redis()
 
 @client.event
 async def on_ready():
@@ -61,16 +62,18 @@ async def info(ctx):
     await ctx.send(embed=embed)
 
 @client.command(help="Navigate to a location")
-async def navigate(ctx, location):
-    # car.command(
-    #     "SEND_TO_VEHICLE",
-    #     type="share_ext_content_raw",
-    #     locale="en-US",
-    #     value={
-    #         "android.intent.extra.TEXT": location
-    #     },
-    #     timestamp_ms=round(time.time() * 1000)
-    # )
+async def navigate(ctx, *args):
+    location = " ".join(args)
+
+    car.command(
+        "SEND_TO_VEHICLE",
+        type="share_ext_content_raw",
+        locale="en-US",
+        value={
+            "android.intent.extra.TEXT": location
+        },
+        timestamp_ms=round(time.time() * 1000)
+    )
     await ctx.reply(f"Navigating to '{location}'")
 
 # @client.command()
@@ -81,6 +84,6 @@ async def navigate(ctx, location):
 @client.command(help="Wakes up the car")
 async def wakeup(ctx):
     car.sync_wake_up()
-    await ctx.send("Car awaken.")
+    await ctx.send("Car is awake.")
 
 client.run(os.environ["DISCORD_TOKEN"])
