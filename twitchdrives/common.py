@@ -13,4 +13,4 @@ def get_redis() -> redis.Redis():
 
 
 def get_aioredis():
-    return aioredis.from_url(REDIS_URL)
+    return aioredis.from_url(REDIS_URL, decode_responses=True)
