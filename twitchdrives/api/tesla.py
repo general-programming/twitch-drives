@@ -10,10 +10,11 @@ from typing import List
 import time
 import logging
 import aiohttp
+import urllib
 from httpx import USE_CLIENT_DEFAULT
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from twitchdrives.common import get_redis
-from twitchdrives.exceptions import VehicleError
+from twitchdrives.exceptions import VehicleError, VehicleAsleep
 
 logger = logging.getLogger(__name__)
 SSO_BASE_URL = "https://auth.tesla.com/"
@@ -52,7 +53,7 @@ class Vehicle(dict):
     async def get_vehicle_summary(self):
         """ Determine the state of the vehicle's various sub-systems """
         summary = await self.api('VEHICLE_SUMMARY')
-        self.update(await summary['response'])
+        self.update(summary['response'])
         return self
 
     async def wake_up(self, timeout=60, interval=2, backoff=1.15):
@@ -113,7 +114,28 @@ class Vehicle(dict):
 
     async def api(self, name, **kwargs):
         """ Endpoint request with vehicle_id path variable """
+        api_response = await self.tesla.api(name, {'vehicle_id': self['id_s']}, **kwargs)
+        api_error = api_response.get("error", None)
+
+        if api_error:
+            if "vehicle unavailable" in api_error:
+                raise VehicleAsleep()
+            else:
+                raise VehicleError(api_error)
+
         return await self.tesla.api(name, {'vehicle_id': self['id_s']}, **kwargs)
+
+    async def command(self, name, **kwargs):
+        """ Wrapper method for vehicle command response error handling """
+        api_response = await self.api(name, **kwargs)
+
+        response = api_response["response"]
+
+        if not response.get('result', None):
+            raise VehicleError(response['reason'])
+
+        return response['result']
+
 
 class AsyncTesla(AsyncOAuth2Client):
     def __init__(self, *args, **kwargs):
@@ -224,13 +246,7 @@ class AsyncTesla(AsyncOAuth2Client):
         )
 
         if serialize:
-            return request.json()
+            response = request.json()
+            return response
         else:
             return request.text
-
-    async def command(self, name, **kwargs):
-        """ Wrapper method for vehicle command response error handling """
-        response = await self.api(name, **kwargs)['response']
-        if not response['result']:
-            raise VehicleError(response['reason'])
-        return response['result']

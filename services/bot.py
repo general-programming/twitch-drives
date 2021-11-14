@@ -7,6 +7,7 @@ import nextcord
 from nextcord.ext import commands
 
 from twitchdrives.api.tesla import get_tesla
+from twitchdrives.exceptions import VehicleAsleep
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
@@ -29,7 +30,12 @@ async def on_ready():
 
 @client.command(help="Car information")
 async def info(ctx):
-    car_details = await car.get_vehicle_data()
+    try:
+        car_details = await car.get_vehicle_data()
+    except VehicleAsleep:
+        await ctx.send("Vehicle is asleep. :(")
+        return
+
     embed = nextcord.Embed(
         title=f"{car_details['vehicle_config']['car_type']} - {car_details['vehicle_state']['vehicle_name']}"
     )
