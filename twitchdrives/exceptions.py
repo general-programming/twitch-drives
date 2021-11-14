@@ -5,3 +5,7 @@ class VehicleError(Exception):
 
 class VehicleAsleep(VehicleError):
     pass
+
+
+class VehicleTimeout(VehicleError):
+    pass

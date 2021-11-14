@@ -12,5 +12,5 @@ def get_redis() -> redis.Redis():
     )
 
 
-async def get_aioredis():
+def get_aioredis():
     return aioredis.from_url(REDIS_URL)
