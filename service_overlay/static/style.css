@@ -1,25 +1,12 @@
 body {
     font-family: Proxima Nova;
-}
-
-.background {
-    z-index: -999;
-    background: url(/static/demo2.jpg);
-    background-size: 100% 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 75%;
-    height: 100%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.85);
 }
 
 .info {
-    position: absolute;
-    left: 0;
-    top: 0;
     padding: 25px;
     text-align: center;
-    color: black;
     display: flex;
     align-items: flex-start;
 }
@@ -64,13 +51,7 @@ body {
 .chat {
     list-style: none;
     padding: 0;
-    color: black;
-    position: absolute;
-    top: 200px;
-    left: 15px;
-    width: 25%;
-    /* text-shadow: black 0.1em 0.1em 0.2em; */
-    /* background-color: rgba(0, 0, 0, 0.75); */
+    margin-left: 25px;
 }
 
 .chat li {
@@ -86,8 +67,8 @@ p.title {
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 25%; /* width of container */
-    height: 50%; /* height of container */
+    width: 350px; /* width of container */
+    height: 300px; /* height of container */
     object-fit: cover;
     object-position: 20% 10%; /* try 20px 10px */
 }
