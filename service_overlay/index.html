@@ -3,22 +3,38 @@
     <head>
         <link rel="stylesheet" href="/static/normalize.css"/>
         <link rel="stylesheet" href="/static/style.css"/>
+        <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""
+      />
+      <script
+        src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""
+      ></script>
     </head>
     <body>
         <div class="container">
             <section class="info">
                 <ul class="shifter">
-                    <li name="park">P</li>
-                    <li name="reverse">R</li>
-                    <li name="neutral">N</li>
-                    <li name="drive">D</li>
+                    <li name="park">PARK</li>
+                    <li name="reverse">REVERSE</li>
+                    <li name="neutral">NEUTRAL</li>
+                    <li name="drive">DRIVE</li>
+                    <li name="pog">SUSSY</li>
                 </ul>
                 <div class="speedinfo">
                     <p id="speed" class="speed">0</p>
                     <p class="unit">MPH</p>
                 </div>
-                <p id="battery">0%</p>
             </section>
+            <p id="battery-percent">100%</p>
+            <div class="battery-container">
+                <div id="battery-left"></div>
+                <div id="battery-right"></div>
+            </div>
             <ul class="chat">
                 <li>erin - DEMOCRACY</li>
                 <li>erin - ANARCHY</li>
@@ -30,8 +46,8 @@
                 <li>erin - DRIVE 45.53408783971277, -122.66049478139767</li>
                 <li>erin - SUSSY</li>
                 <li>erin - POGGERS</li>
-            </section>
-            <img class="map" src="/static/map.png"/>
+            </ul>
+            <div id="map"></div>
         </div>
         <script src="/static/main.js"></script>
     </body>
