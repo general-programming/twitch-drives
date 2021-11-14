@@ -14,7 +14,7 @@ import urllib
 from httpx import USE_CLIENT_DEFAULT
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from twitchdrives.common import get_redis
-from twitchdrives.exceptions import VehicleError, VehicleAsleep
+from twitchdrives.exceptions import VehicleError, VehicleAsleep, VehicleTimeout
 
 logger = logging.getLogger(__name__)
 SSO_BASE_URL = "https://auth.tesla.com/"
@@ -47,13 +47,15 @@ class Vehicle(dict):
     async def get_vehicle_data(self):
         """ A rollup of all the data request endpoints plus vehicle config """
         data = await self.api('VEHICLE_DATA')
-        self.update(data['response'])
+        if data["response"]:
+            self.update(data['response'])
         return self
 
     async def get_vehicle_summary(self):
         """ Determine the state of the vehicle's various sub-systems """
         summary = await self.api('VEHICLE_SUMMARY')
-        self.update(summary['response'])
+        if summary["response"]:
+            self.update(summary['response'])
         return self
 
     async def wake_up(self, timeout=60, interval=2, backoff=1.15):
@@ -108,6 +110,8 @@ class Vehicle(dict):
                     async for msg in ws:
                         if msg.type == aiohttp.WSMsgType.BINARY:
                             parsed = await self._parse_msg(ws, msg)
+                            if parsed:
+                                yield parsed
                         elif msg.type == aiohttp.WSMsgType.ERROR:
                             break
                 await asyncio.sleep(5)
@@ -120,6 +124,8 @@ class Vehicle(dict):
         if api_error:
             if "vehicle unavailable" in api_error:
                 raise VehicleAsleep()
+            elif '"timeout"' in api_error:
+                raise VehicleTimeout()
             else:
                 raise VehicleError(api_error)
 
@@ -150,7 +156,7 @@ class AsyncTesla(AsyncOAuth2Client):
         return tesla
 
     async def _update_token(self, token: dict, refresh_token: str):
-        self.redis.hmset("tesla:token", token)
+        self.redis.hset("tesla:token", mapping=token)
 
     def refresh_token(self, url, refresh_token=None, body='', auth=None, headers=None, **kwargs):
         session_kwargs = self._extract_session_request_params(kwargs)
