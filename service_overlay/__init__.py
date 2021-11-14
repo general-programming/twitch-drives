@@ -19,5 +19,11 @@ async def stream_tesla(request, ws):
     tesla_state = await app.redis.hgetall("tesla:state")
     print(tesla_state)
     await ws.send(json.dumps(tesla_state))
+
+    pubsub = app.redis.pubsub(ignore_subscribe_messages=True)
+    await pubsub.subscribe("tesla:state")
     while True:
-        await asyncio.sleep(5)
+        message = await pubsub.get_message(timeout=1.0)
+        print("message", message)
+        if message:
+            await ws.send(message["data"])
