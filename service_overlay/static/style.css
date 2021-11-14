@@ -9,16 +9,17 @@ body {
     text-align: center;
     display: flex;
     align-items: flex-end;
-    border-bottom: rgba(255, 255, 255, 0.75) 1px solid;
 }
 
 .info .speed,
 .info .unit {
     margin: 0;
+    font-weight: 500;
 }
 
 .speedinfo {
     width: 200px;
+    align-self: center;
 }
 
 .info .shifter {
@@ -37,6 +38,7 @@ body {
 
 .info .shifter li {
     font-size: 1.5rem;
+    transition: color 0.2s;
     /* margin-bottom: 5px; */
 }
 
@@ -66,20 +68,47 @@ p.title {
     font-size: 2rem;
 }
 
-.map {
+#map {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 350px; /* width of container */
     height: 300px; /* height of container */
-    object-fit: cover;
-    object-position: 20% 10%; /* try 20px 10px */
 }
 
-#battery {
-    align-self: end;
+.battery-container {
+    /* border-bottom: 1px solid #ccc!important; */
+    width: 100%;
+    display: flex
+}
+
+#battery-percent {
     font-size: 1.5rem;
-    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    font-weight: 800;
     margin: 0;
-    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#battery-left, #battery-right {
+    transition: width 1s;
+}
+
+#battery-left {
+    margin: 0;
+    background-color: #4caf50;
+    height: 4px;
+    display: inline-block;
+}
+
+#battery-right {
+    margin: 0;
+    background-color: grey;
+    height: 4px;
+    display: inline-block;
+}
+
+#map {
+    display: none;
 }
