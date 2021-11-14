@@ -24,6 +24,5 @@ async def stream_tesla(request, ws):
     await pubsub.subscribe("tesla:state")
     while True:
         message = await pubsub.get_message(timeout=1.0)
-        print("message", message)
         if message:
             await ws.send(message["data"])
