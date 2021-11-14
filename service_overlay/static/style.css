@@ -1,0 +1,93 @@
+body {
+    font-family: Proxima Nova;
+}
+
+.background {
+    z-index: -999;
+    background: url(/static/demo2.jpg);
+    background-size: 100% 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 75%;
+    height: 100%;
+}
+
+.info {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 25px;
+    text-align: center;
+    color: black;
+    display: flex;
+    align-items: flex-start;
+}
+
+.info .speed,
+.info .unit {
+    margin: 0;
+}
+
+.speedinfo {
+    width: 100px;
+}
+
+.info .shifter {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin: 0;
+    margin-top: 15px;
+    margin-right: 30px;
+}
+
+.info .shifter .active {
+    font-weight: bold;
+    color: pink;
+}
+
+.info .shifter li {
+    font-size: 1.5rem;
+    /* margin-bottom: 5px; */
+}
+
+.info .speed {
+    font-size: 5.5rem;
+}
+
+.info .unit {
+    font-size: 1.5rem;
+}
+
+
+.chat {
+    list-style: none;
+    padding: 0;
+    color: black;
+    position: absolute;
+    top: 200px;
+    left: 15px;
+    width: 25%;
+    /* text-shadow: black 0.1em 0.1em 0.2em; */
+    /* background-color: rgba(0, 0, 0, 0.75); */
+}
+
+.chat li {
+    word-wrap: break-word;
+}
+
+p.title {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.map {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 25%; /* width of container */
+    height: 50%; /* height of container */
+    object-fit: cover;
+    object-position: 20% 10%; /* try 20px 10px */
+}
