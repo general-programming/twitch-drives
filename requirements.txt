@@ -6,3 +6,4 @@ nextcord
 Authlib
 httpx
 aioredis
+aiohttp

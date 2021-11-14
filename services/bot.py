@@ -4,20 +4,23 @@ import time
 from unicodedata import name
 
 import nextcord
-import redis
-import teslapy
 from nextcord.ext import commands
 
-from twitchdrives.api.tesla_sync import get_tesla
+from twitchdrives.api.tesla import get_tesla
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
-tesla = get_tesla()
-car = tesla.vehicle_list()[0]
+tesla = None
+car = None
 
 @client.event
 async def on_ready():
+    global tesla
+    global car
     print(f'We have logged in as {client.user}')
+    tesla = await get_tesla()
+    vehicles = await tesla.vehicles
+    car = vehicles[0]
 
 # @client.event
 # async def on_message(message):
@@ -26,7 +29,7 @@ async def on_ready():
 
 @client.command(help="Car information")
 async def info(ctx):
-    car_details = car.get_vehicle_data()
+    car_details = await car.get_vehicle_data()
     embed = nextcord.Embed(
         title=f"{car_details['vehicle_config']['car_type']} - {car_details['vehicle_state']['vehicle_name']}"
     )
@@ -65,7 +68,7 @@ async def info(ctx):
 async def navigate(ctx, *args):
     location = " ".join(args)
 
-    car.command(
+    await car.command(
         "SEND_TO_VEHICLE",
         type="share_ext_content_raw",
         locale="en-US",
@@ -83,7 +86,7 @@ async def navigate(ctx, *args):
 
 @client.command(help="Wakes up the car")
 async def wakeup(ctx):
-    car.sync_wake_up()
+    await car.wake_up()
     await ctx.send("Car is awake.")
 
 client.run(os.environ["DISCORD_TOKEN"])
