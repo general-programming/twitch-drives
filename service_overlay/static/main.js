@@ -47,18 +47,6 @@ L.tileLayer(
 const mapMarker = L.marker(map.getCenter()).addTo(map);
 
 // Setup websocket
-let sock = new WebSocket("ws://" + document.location.host + "/stream");
-
-sock.onopen = (event) => {
-    console.log("socket opened", event);
-}
-
-sock.onmessage = (event) => {
-    let data = JSON.parse(event.data);
-    console.log(data);
-    parseEvent(data);
-}
-
 const parseEvent = (event) => {
     if (isExisting(event.speed)) {
         console.log("speed", event.speed);
@@ -90,3 +78,24 @@ const parseEvent = (event) => {
         mapMarker.setLatLng(location)
     }
 }
+
+const launch_socket = () => {
+    let sock = new WebSocket("ws://" + document.location.host + "/stream");
+
+    sock.onopen = (event) => {
+        console.log("socket opened", event);
+    }
+
+    sock.onmessage = (event) => {
+        let data = JSON.parse(event.data);
+        console.log(data);
+        parseEvent(data);
+    }
+
+    sock.onclose = () => {
+        console.log("socket closed");
+        setTimeout(launch_socket, 1000);
+    }
+}
+
+launch_socket();
