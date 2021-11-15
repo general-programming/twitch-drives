@@ -28,10 +28,11 @@ class VehicleGrabber:
 
     async def socket_poller(self, vehicle: Vehicle):
         async for event in vehicle.stream():
-            print(event)
             await self.push_data("socket", event)
 
     async def push_data(self, event_source: str, event: dict):
+        await self.redis.lpush("tesla:events:" + event_source, json.dumps(event))
+
         to_push = {
             "_event_source": event_source
         }
