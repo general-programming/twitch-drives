@@ -2,6 +2,7 @@
 
 import ast
 import asyncio
+from contextlib import asynccontextmanager
 import pkgutil
 import json
 import os
@@ -33,6 +34,16 @@ async def get_tesla():
             'User-Agent': "Tesla/1.0.0"
         },
     )
+
+
+@asynccontextmanager
+async def get_car():
+    try:
+        tesla = await get_tesla()
+        vehicles = await tesla.vehicles
+        yield vehicles[0]
+    finally:
+        await tesla.aclose()
 
 
 class Vehicle(dict):
@@ -126,6 +137,7 @@ class Vehicle(dict):
             elif '"timeout"' in api_error:
                 raise VehicleTimeout()
             else:
+                print(api_response)
                 raise VehicleError(api_error)
 
         return await self.tesla.api(name, {'vehicle_id': self['id_s']}, **kwargs)
