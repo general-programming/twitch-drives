@@ -1,0 +1,7 @@
+#map {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 350px; /* width of container */
+    height: 300px; /* height of container */
+}

@@ -2,6 +2,11 @@
 <html>
     <head>
         <link rel="stylesheet" href="/static/normalize.css"/>
+        <link rel="stylesheet" href="/static/bar.css"/>
+        <link rel="stylesheet" href="/static/infobox.css"/>
+        <link rel="stylesheet" href="/static/shifter.css"/>
+        <link rel="stylesheet" href="/static/chat.css"/>
+        <link rel="stylesheet" href="/static/map.css"/>
         <link rel="stylesheet" href="/static/style.css"/>
         <link
         rel="stylesheet"
@@ -23,7 +28,6 @@
                     <li name="reverse">REVERSE</li>
                     <li name="neutral">NEUTRAL</li>
                     <li name="drive">DRIVE</li>
-                    <!-- <li name="pog">SUSSY</li> -->
                 </ul>
                 <div class="speedinfo">
                     <p id="speed" class="speed">0</p>
@@ -31,9 +35,10 @@
                 </div>
             </section>
             <p id="battery-percent">100%</p>
-            <div class="battery-container">
-                <div id="battery-left"></div>
-                <div id="battery-right"></div>
+            <div class="bar-container">
+                <div id="battery-left" class="bar-left"></div>
+                <div id="battery-right" class="bar-right"></div>
+            </div>
             </div>
             <ul class="chat hidden">
                 <li>erin - DEMOCRACY</li>
