@@ -92,15 +92,14 @@ class Vehicle(dict):
                     pass
             return data
         elif msg['msg_type'] == 'data:error':
-            logger.error(msg['value'])
+            logger.error("socket error: %s", msg['value'])
             await socket.close()
 
     async def stream(self):
         async with aiohttp.ClientSession() as session:
-            # ping 10s
             print("streaming open")
             while True:
-                async with session.ws_connect(STREAMING_BASE_URL + 'streaming/', heartbeat=5) as ws:
+                async with session.ws_connect(STREAMING_BASE_URL + 'streaming/', heartbeat=3) as ws:
                     await ws.send_json({
                         'msg_type': 'data:subscribe_oauth',
                         'value': ','.join(self.COLS),
