@@ -23,6 +23,35 @@ async def on_ready():
 #     if message.author == client.user:
 #         return
 
+if "TEST" in os.environ:
+    @client.event
+    async def on_command_error(ctx, error):
+        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        if ctx.author.id != 66153853824802816:
+            return
+
+        embed = nextcord.Embed(
+            description="An error happened running this command",
+            color=nextcord.Colour.red()
+        ).set_author(
+            name="Something happened",
+            icon_url="https://nepeat.github.io/assets/icons/error.png",
+        )
+
+        # Owner extra info
+        embed.add_field(
+            name=random.choice([
+                "How you fucked up",
+                "Blame nepeat",
+                "Hellback (Most recent failure last)",
+                "lol"
+            ]),
+            value=f"```{traceback.format_exception(type(error), error, error.__traceback__)}```"
+        )
+
+        return await ctx.send(embed=embed)
+
+
 @client.command(help="Car information")
 async def info(ctx):
     async with get_car() as car:
