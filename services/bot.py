@@ -1,27 +1,22 @@
 import logging
 import os
-import time
-from unicodedata import name
+import sys
 
 import nextcord
+import random
+import traceback
 from nextcord.ext import commands
-
-from twitchdrives.api.tesla import get_tesla
+from twitchdrives.api.tesla import get_car
+from twitchdrives.caractions.navigation import NavigationAction
+from twitchdrives.caractions.vote import VoteAction
 from twitchdrives.exceptions import VehicleAsleep
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
-tesla = None
-car = None
 
 @client.event
 async def on_ready():
-    global tesla
-    global car
     print(f'We have logged in as {client.user}')
-    tesla = await get_tesla()
-    vehicles = await tesla.vehicles
-    car = vehicles[0]
 
 # @client.event
 # async def on_message(message):
@@ -30,6 +25,7 @@ async def on_ready():
 
 @client.command(help="Car information")
 async def info(ctx):
+    async with get_car() as car:
     try:
         car_details = await car.get_vehicle_data()
     except VehicleAsleep:
@@ -73,25 +69,20 @@ async def info(ctx):
 @client.command(help="Navigate to a location")
 async def navigate(ctx, *args):
     location = " ".join(args)
+    navigation = NavigationAction()
 
-    await car.command(
-        "SEND_TO_VEHICLE",
-        type="share_ext_content_raw",
-        locale="en-US",
-        value={
-            "android.intent.extra.TEXT": location
-        },
-        timestamp_ms=round(time.time() * 1000)
-    )
+    await navigation.handle(location)
     await ctx.reply(f"Navigating to '{location}'")
 
 # @client.command()
 # async def honk(ctx):
-#     car.command("HONK_HORN")
+#     car = await get_car()
+#     await car.command("HONK_HORN")
 #     await ctx.send("<:honk:907977608434696212>")
 
 @client.command(help="Wakes up the car")
 async def wakeup(ctx):
+    async with get_car() as car:
     await car.wake_up()
     await ctx.send("Car is awake.")
 
