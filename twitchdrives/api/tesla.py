@@ -15,7 +15,7 @@ import urllib
 from httpx import USE_CLIENT_DEFAULT
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from twitchdrives.common import get_redis
-from twitchdrives.exceptions import VehicleError, VehicleAsleep, VehicleTimeout
+from twitchdrives.exceptions import VehicleError, VehicleAsleep, VehicleTimeout, VehicleInvalidShare
 
 logger = logging.getLogger(__name__)
 SSO_BASE_URL = "https://auth.tesla.com/"
@@ -132,10 +132,13 @@ class Vehicle(dict):
         api_error = api_response.get("error", None)
 
         if api_error:
+            api_error_description = api_response.get("error_description", None)
             if "vehicle unavailable" in api_error:
                 raise VehicleAsleep()
             elif '"timeout"' in api_error:
                 raise VehicleTimeout()
+            elif api_error_description in ["src_not_supported", "value_not_supported"]:
+                raise VehicleInvalidShare()
             else:
                 print(api_response)
                 raise VehicleError(api_error)

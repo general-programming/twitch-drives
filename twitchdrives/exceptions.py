@@ -9,3 +9,7 @@ class VehicleAsleep(VehicleError):
 
 class VehicleTimeout(VehicleError):
     pass
+
+
+class VehicleInvalidShare(VehicleError):
+    pass

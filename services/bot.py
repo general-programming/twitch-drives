@@ -9,7 +9,7 @@ from nextcord.ext import commands
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.caractions.vote import VoteAction
-from twitchdrives.exceptions import VehicleAsleep
+from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
@@ -55,11 +55,11 @@ if "TEST" in os.environ:
 @client.command(help="Car information")
 async def info(ctx):
     async with get_car() as car:
-    try:
-        car_details = await car.get_vehicle_data()
-    except VehicleAsleep:
-        await ctx.send("Vehicle is asleep. :(")
-        return
+        try:
+            car_details = await car.get_vehicle_data()
+        except VehicleAsleep:
+            await ctx.send("Vehicle is asleep. :(")
+            return
 
     embed = nextcord.Embed(
         title=f"{car_details['vehicle_config']['car_type']} - {car_details['vehicle_state']['vehicle_name']}"
@@ -100,8 +100,11 @@ async def navigate(ctx, *args):
     location = " ".join(args)
     navigation = NavigationAction()
 
-    await navigation.handle(location)
-    await ctx.reply(f"Navigating to '{location}'")
+    try:
+        await navigation.handle(location)
+        await ctx.reply(f"Navigating to '{location}'")
+    except VehicleInvalidShare:
+        await ctx.reply(f"'{location}' is not a valid destination.")
 
 @client.command()
 async def vote(ctx, vote_type: str):
@@ -117,7 +120,7 @@ async def vote(ctx, vote_type: str):
 @client.command(help="Wakes up the car")
 async def wakeup(ctx):
     async with get_car() as car:
-    await car.wake_up()
+        await car.wake_up()
     await ctx.send("Car is awake.")
 
 client.run(os.environ["DISCORD_TOKEN"])
