@@ -74,6 +74,11 @@ async def navigate(ctx, *args):
     await navigation.handle(location)
     await ctx.reply(f"Navigating to '{location}'")
 
+@client.command()
+async def vote(ctx, vote_type: str):
+    vote_action = VoteAction()
+    print(await vote_action.handle(vote_type))
+
 # @client.command()
 # async def honk(ctx):
 #     car = await get_car()
