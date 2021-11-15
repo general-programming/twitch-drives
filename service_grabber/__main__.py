@@ -81,30 +81,6 @@ class VehicleGrabber:
             if event_name in event:
                 to_push[push_name] = event[event_name]
 
-        # if "odometer" in event:
-        #     to_push["odometer"] = event["odometer"]
-
-        # if "est_lat" in event:
-        #     to_push["latitude"] = event["est_lat"]
-
-        # if "est_lng" in event:
-        #     to_push["longitude"] = event["est_lng"]
-
-        # if "soc" in event:
-        #     to_push["battery"] = event["soc"]
-
-        # if "est_range" in event:
-        #     to_push["range"] = event["est_range"]
-
-        # if "timestamp" in event:
-        #     to_push["timestamp"] = event["timestamp"]
-
-        # if "heading" in event:
-        #     to_push["heading"] = event["heading"]
-
-        # if "power" in event:
-        #     to_push["power"] = event["power"]
-
         print(event_source, to_push)
         await self.redis.hset("tesla:state", mapping=to_push)
         await self.redis.publish("tesla:state", json.dumps(to_push))
@@ -129,6 +105,7 @@ class VehicleGrabber:
             for task in self.tasks:
                 task.cancel()
             await self.redis.close()
+            await self.tesla.aclose()
 
 
 
