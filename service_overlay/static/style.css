@@ -108,3 +108,7 @@ p.title {
     height: 4px;
     display: inline-block;
 }
+
+.hidden {
+    display: none;
+}
