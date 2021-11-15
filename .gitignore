@@ -5,3 +5,4 @@ __pycache__
 .envrc
 cache.json
 .direnv/
+private/
