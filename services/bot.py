@@ -10,18 +10,26 @@ from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.caractions.vote import VoteAction
 from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare
+from twitchdrives.store.chat import ChatStore
 
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
+chatstore = ChatStore()
 
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
-# @client.event
-# async def on_message(message):
-#     if message.author == client.user:
-#         return
+@client.event
+async def on_message(message):
+    if message.content:
+        await chatstore.add(
+            "discord",
+            message.content,
+            message.author.id,
+            message.channel.id,
+        )
+    await client.process_commands(message)
 
 if "TEST" in os.environ:
     @client.event
