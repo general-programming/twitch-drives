@@ -3,7 +3,7 @@ import os
 import bottom
 
 from twitchdrives.api.tesla import get_car
-from twitchdrives.exceptions import VehicleAsleep
+from twitchdrives.store.chat import ChatStore
 
 nick = os.environ["TWITCH_USER"]
 server = "irc.chat.twitch.tv"
@@ -11,6 +11,8 @@ password = os.environ["TWITCH_PASS"]
 port = 6697
 
 bot = bottom.Client(host=server, port=port, ssl=True)
+chatstore = ChatStore()
+
 
 @bot.on('CLIENT_CONNECT')
 async def connect(**kwargs):
@@ -46,6 +48,8 @@ def keepalive(message, **kwargs):
 async def message(nick: str, target: str, message: str, **kwargs):
     """ Echo all messages """
     print(nick, target, message)
+    await chatstore.add("twitch", message, nick, target)
+
     message = message.strip()
     if message.startswith("!info"):
         async with get_car() as car:
