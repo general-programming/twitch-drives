@@ -16,14 +16,17 @@ from twitchdrives.store.chat import ChatStore
 logging.basicConfig(level=logging.INFO)
 client = commands.Bot(command_prefix="t!")
 chatstore = ChatStore()
+TESLA_CHANNEL = int(os.environ["DISCORD_TESLA_CHANNEL"])
+
 
 @client.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f"We have logged in as {client.user}")
+
 
 @client.event
 async def on_message(message):
-    if message.content:
+    if message.content and message.channel.id == TESLA_CHANNEL:
         await chatstore.add(
             "discord",
             message.content,
@@ -34,16 +37,20 @@ async def on_message(message):
         )
     await client.process_commands(message)
 
+
 if "TEST" in os.environ:
+
     @client.event
     async def on_command_error(ctx, error):
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        traceback.print_exception(
+            type(error), error, error.__traceback__, file=sys.stderr
+        )
         if ctx.author.id != 66153853824802816:
             return
 
         embed = nextcord.Embed(
             description="An error happened running this command",
-            color=nextcord.Colour.red()
+            color=nextcord.Colour.red(),
         ).set_author(
             name="Something happened",
             icon_url="https://nepeat.github.io/assets/icons/error.png",
@@ -51,13 +58,15 @@ if "TEST" in os.environ:
 
         # Owner extra info
         embed.add_field(
-            name=random.choice([
-                "How you fucked up",
-                "Blame nepeat",
-                "Hellback (Most recent failure last)",
-                "lol"
-            ]),
-            value=f"```{traceback.format_exception(type(error), error, error.__traceback__)}```"
+            name=random.choice(
+                [
+                    "How you fucked up",
+                    "Blame nepeat",
+                    "Hellback (Most recent failure last)",
+                    "lol",
+                ]
+            ),
+            value=f"```{traceback.format_exception(type(error), error, error.__traceback__)}```",
         )
 
         return await ctx.send(embed=embed)
@@ -79,32 +88,31 @@ async def info(ctx):
     embed.add_field(
         name="Charge",
         value=f"{car_details['charge_state']['battery_level']}%",
-        inline=True
+        inline=True,
     )
 
     embed.add_field(
         name="Speed",
         value=f"{car_details['drive_state']['speed'] or 0}mph",
-        inline=True
+        inline=True,
     )
 
     embed.add_field(
         name="User Present?",
         value=car_details["vehicle_state"]["is_user_present"],
-        inline=True
+        inline=True,
     )
 
     embed.add_field(
         name="Temperature (inside/outside)",
         value=f"{car_details['climate_state']['inside_temp']}C/{car_details['climate_state']['outside_temp']}C",
-        inline=True
+        inline=True,
     )
 
-    embed.set_footer(
-        text=f"version {car_details['vehicle_state']['car_version']}"
-    )
+    embed.set_footer(text=f"version {car_details['vehicle_state']['car_version']}")
 
     await ctx.send(embed=embed)
+
 
 @client.command(help="Navigate to a location")
 async def navigate(ctx, *args):
@@ -117,10 +125,12 @@ async def navigate(ctx, *args):
     except VehicleInvalidShare:
         await ctx.reply(f"'{location}' is not a valid destination.")
 
+
 @client.command()
 async def vote(ctx, vote_type: str):
     vote_action = VoteAction()
     print(await vote_action.handle(vote_type))
+
 
 # @client.command()
 # async def honk(ctx):
@@ -128,10 +138,12 @@ async def vote(ctx, vote_type: str):
 #     await car.command("HONK_HORN")
 #     await ctx.send("<:honk:907977608434696212>")
 
+
 @client.command(help="Wakes up the car")
 async def wakeup(ctx):
     async with get_car() as car:
         await car.wake_up()
     await ctx.send("Car is awake.")
+
 
 client.run(os.environ["DISCORD_TOKEN"])

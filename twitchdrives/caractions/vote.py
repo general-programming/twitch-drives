@@ -4,7 +4,7 @@ from twitchdrives.caractions.base import ActionBase
 
 
 class VoteTypes(Enum):
-    ANARCHY = "ANARCHY",
+    ANARCHY = "ANARCHY"
     DEMOCRACY = "DEMOCRACY"
     AVERAGE = "AVERAGE"
 

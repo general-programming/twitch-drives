@@ -8,6 +8,7 @@ from twitchdrives.common import get_redis
 
 def get_tesla() -> teslapy.Tesla:
     redis = get_redis()
+
     def cache_loader():
         try:
             return json.loads(redis.get("tesla:tokens"))

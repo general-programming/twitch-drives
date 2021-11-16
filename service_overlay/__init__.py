@@ -8,6 +8,7 @@ from twitchdrives.store.chat import ChatStore
 
 app = Sanic(name="twitchdrives_overlay")
 
+
 @app.listener("before_server_start")
 async def setup_redis(app, loop):
     app.redis = await get_aioredis()
@@ -16,14 +17,13 @@ async def setup_redis(app, loop):
 app.static("/", "./index.html")
 app.static("/static", "./static")
 
+
 @app.websocket("/stream")
 async def stream_tesla(request, ws):
     # return latest chat messages
     chat_store = ChatStore()
     async for message in chat_store.read():
-        await ws.send(json.dumps({
-            "chat": message
-        }))
+        await ws.send(json.dumps({"chat": message}))
 
     # return latest tesla state
     tesla_state = await app.redis.hgetall("tesla:state")

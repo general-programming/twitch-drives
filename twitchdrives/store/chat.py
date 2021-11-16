@@ -13,13 +13,11 @@ class ChatStore:
             "username": nick,
             "channel": channel,
             "message": message,
-            **kwargs
+            **kwargs,
         }
 
         await self.redis.xadd("stream:chat", payload, maxlen=MAX_MESSAGES)
-        await self.redis.publish("stream:chat", json.dumps({
-            "chat": payload
-        }))
+        await self.redis.publish("stream:chat", json.dumps({"chat": payload}))
 
     async def read(self, count: int = 25):
         messages = await self.redis.xrevrange("stream:chat", count=count)

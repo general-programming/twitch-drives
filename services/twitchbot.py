@@ -17,22 +17,20 @@ bot = bottom.Client(host=server, port=port, ssl=True)
 chatstore = ChatStore()
 
 
-@bot.on('CLIENT_CONNECT')
+@bot.on("CLIENT_CONNECT")
 async def connect(**kwargs):
     print("connecting")
-    bot.send('PASS', password=password)
-    bot.send('NICK', nick=nick)
-    bot.send('USER', user=nick,
-             realname='https://github.com/numberoverzero/bottom')
+    bot.send("PASS", password=password)
+    bot.send("NICK", nick=nick)
+    bot.send("USER", user=nick, realname="https://github.com/numberoverzero/bottom")
 
     # Don't try to join channels until the server has
     # sent the MOTD, or signaled that there's no MOTD.
     print("waiting for motd")
     done, pending = await asyncio.wait(
-        [bot.wait("RPL_ENDOFMOTD"),
-         bot.wait("ERR_NOMOTD")],
+        [bot.wait("RPL_ENDOFMOTD"), bot.wait("ERR_NOMOTD")],
         loop=bot.loop,
-        return_when=asyncio.FIRST_COMPLETED
+        return_when=asyncio.FIRST_COMPLETED,
     )
     print("motd done")
 
@@ -40,7 +38,7 @@ async def connect(**kwargs):
     for future in pending:
         future.cancel()
 
-    bot.send('JOIN', channel="#" + nick)
+    bot.send("JOIN", channel="#" + nick)
     print("joined channel")
 
 
@@ -54,9 +52,9 @@ def keepalive(message, **kwargs):
     bot.send("PONG", message=message)
 
 
-@bot.on('PRIVMSG')
+@bot.on("PRIVMSG")
 async def message(nick: str, target: str, message: str, **kwargs):
-    """ Echo all messages """
+    """Echo all messages"""
     print(nick, target, message)
     await chatstore.add("twitch", message, nick, target)
 
@@ -66,16 +64,18 @@ async def message(nick: str, target: str, message: str, **kwargs):
             try:
                 car_details = await car.get_vehicle_data()
             except VehicleAsleep:
-                bot.send("PRIVMSG", target=target, message="The car is in sleep mode. :(")
+                bot.send(
+                    "PRIVMSG", target=target, message="The car is in sleep mode. :("
+                )
                 return
 
             output = "{name} is at {charge}%, going {speed}mph. The temperature outside is {outside_temp}C. The temperature inside is {inside_temp}C. Car's version is {version}".format(
-                name=car_details['vehicle_state']['vehicle_name'],
-                charge=car_details['charge_state']['battery_level'],
-                speed=car_details['drive_state']['speed'] or 0,
-                inside_temp=car_details['climate_state']['inside_temp'],
-                outside_temp=car_details['climate_state']['outside_temp'],
-                version=car_details['vehicle_state']['car_version']
+                name=car_details["vehicle_state"]["vehicle_name"],
+                charge=car_details["charge_state"]["battery_level"],
+                speed=car_details["drive_state"]["speed"] or 0,
+                inside_temp=car_details["climate_state"]["inside_temp"],
+                outside_temp=car_details["climate_state"]["outside_temp"],
+                version=car_details["vehicle_state"]["car_version"],
             )
             bot.send("PRIVMSG", target=target, message=output)
     elif message.startswith("!navigate"):
@@ -92,6 +92,7 @@ async def message(nick: str, target: str, message: str, **kwargs):
             reply = f"'{destination}' is not a valid destination."
 
         bot.send("PRIVMSG", target=target, message=reply)
+
 
 bot.loop.create_task(bot.connect())
 bot.loop.run_forever()

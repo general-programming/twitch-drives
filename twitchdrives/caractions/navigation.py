@@ -13,8 +13,6 @@ class NavigationAction(ActionBase):
                 "SEND_TO_VEHICLE",
                 type="share_ext_content_raw",
                 locale="en-US",
-                value={
-                    "android.intent.extra.TEXT": location
-                },
-                timestamp_ms=round(time.time() * 1000)
+                value={"android.intent.extra.TEXT": location},
+                timestamp_ms=round(time.time() * 1000),
             )

@@ -4,9 +4,10 @@ import time
 import teslapy
 from pypresence import Presence
 
-client_id = '907891789569073183'
+client_id = "907891789569073183"
 RPC = Presence(client_id, pipe=0)
 RPC.connect()
+
 
 def rich():
     with teslapy.Tesla(os.environ["TESLA_EMAIL"]) as tesla:
@@ -38,8 +39,9 @@ def rich():
                 large_image=large_image,
                 large_text="image hover",
                 details=state,
-                state=bottom_text
+                state=bottom_text,
             )
             time.sleep(10)
+
 
 rich()

@@ -35,9 +35,7 @@ class VehicleGrabber:
     async def push_data(self, event_source: str, event: dict):
         await self.redis.lpush("tesla:events:" + event_source, json.dumps(event))
 
-        to_push = {
-            "_event_source": event_source
-        }
+        to_push = {"_event_source": event_source}
 
         # Pull info from event.vehicle_state
         vehicle_state = event.get("vehicle_state", {})
@@ -51,7 +49,7 @@ class VehicleGrabber:
             to_push["speed"] = drive_state.get("speed") or 0
             to_push["latitude"] = drive_state["latitude"]
             to_push["longitude"] = drive_state["longitude"]
-            to_push["shift_state"] =  drive_state["shift_state"] or "P"
+            to_push["shift_state"] = drive_state["shift_state"] or "P"
             to_push["heading"] = drive_state["heading"]
             to_push["power"] = drive_state["power"]
 
@@ -76,7 +74,7 @@ class VehicleGrabber:
             "est_range": "range",
             "timestamp": "timestamp",
             "heading": "heading",
-            "power": "power"
+            "power": "power",
         }
 
         for event_name, push_name in stream_events.items():
@@ -110,8 +108,6 @@ class VehicleGrabber:
             await self.tesla.aclose()
 
 
-
 if __name__ == "__main__":
     grabber = VehicleGrabber()
     asyncio.run(grabber.main())
-

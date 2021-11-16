@@ -1,5 +1,6 @@
 class VehicleError(Exception):
-    """ Vehicle exception class """
+    """Vehicle exception class"""
+
     pass
 
 
