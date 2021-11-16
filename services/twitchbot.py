@@ -40,9 +40,16 @@ async def connect(**kwargs):
     bot.send('JOIN', channel="#" + nick)
     print("joined channel")
 
-@bot.on('PING')
+
+@bot.on("client_disconnect")
+async def reconnect(**kwargs):
+    await bot.connect()
+
+
+@bot.on("ping")
 def keepalive(message, **kwargs):
-    bot.send('PONG', message=message)
+    bot.send("PONG", message=message)
+
 
 @bot.on('PRIVMSG')
 async def message(nick: str, target: str, message: str, **kwargs):
