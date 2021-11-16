@@ -121,9 +121,11 @@ async def navigate(ctx, *args):
 
     try:
         await navigation.handle(location)
-        await ctx.reply(f"Navigating to '{location}'")
+        reply = f"Navigating to '{location}'"
     except VehicleInvalidShare:
-        await ctx.reply(f"'{location}' is not a valid destination.")
+        reply = f"'{location}' is not a valid destination."
+
+    await ctx.send(nextcord.utils.escape_mentions(reply))
 
 
 @client.command()
