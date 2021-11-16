@@ -44,7 +44,14 @@ L.tileLayer(
 }
 ).addTo(map);
 
-const mapMarker = L.marker(map.getCenter()).addTo(map);
+const arrowIcon = L.divIcon({
+    className: 'icon-arrow',
+    html: '<svg viewBox="0 0 32 32" height="32" width="32"><path style="fill: #9146ff" d="m 15.992188,2 a 1.0001,1.0001 0 0 0 -0.914063,0.6113281 l -11,25.9999999 A 1.0001,1.0001 0 0 0 5.5371094,29.84375 L 16,23.185547 26.462891,29.84375 a 1.0001,1.0001 0 0 0 1.458984,-1.232422 l -11,-25.9999999 A 1.0001,1.0001 0 0 0 15.992188,2 Z" /></svg>',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+});
+
+const mapMarker = L.marker(map.getCenter(), {icon: arrowIcon}).addTo(map);
 
 // Setup websocket
 const parseEvent = (event) => {
@@ -76,6 +83,10 @@ const parseEvent = (event) => {
         const location = new L.LatLng(event.latitude, event.longitude)
         map.panTo(location);
         mapMarker.setLatLng(location)
+    }
+
+    if (isExisting(event.heading)) {
+        mapMarker._icon.children[0].style.transform = `rotate(${event.heading}deg)`;
     }
 
     if (isExisting(event.chat)) {
