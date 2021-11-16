@@ -27,8 +27,10 @@ async def on_message(message):
         await chatstore.add(
             "discord",
             message.content,
-            message.author.id,
-            message.channel.id,
+            nick=message.author.name,
+            channel=message.channel.name,
+            discord_author_id=message.author.id,
+            discord_channel_id=message.channel.id,
         )
     await client.process_commands(message)
 

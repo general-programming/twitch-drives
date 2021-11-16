@@ -77,6 +77,20 @@ const parseEvent = (event) => {
         map.panTo(location);
         mapMarker.setLatLng(location)
     }
+
+    if (isExisting(event.chat)) {
+        parseChat(event.chat);
+    }
+}
+
+let parseChat = (chat) => {
+    const chatElement = document.getElementById("chat");
+    if (chatElement.childElementCount == 20) {
+        chatElement.childNodes[0].remove()
+    }
+    let newElement = document.createElement("li");
+    newElement.textContent = `[${chat.source}/${chat.channel}] ${chat.username}: ${chat.message}`
+    chatElement.appendChild(newElement);
 }
 
 const launch_socket = () => {
