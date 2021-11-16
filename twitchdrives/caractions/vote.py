@@ -16,6 +16,8 @@ class VoteAction(ActionBase):
         """
         Throws KeyError if vote does not exist.
         """
+        vote_state = await self.get_state()
+
         print(vote)
         vote_type = VoteTypes[vote.upper()]
         vote_backoff = await self.redis.exists("tesla:votebackoff")
@@ -23,5 +25,5 @@ class VoteAction(ActionBase):
             return
 
         print(vote_backoff)
-        print(await self.get_state())
+        print(vote_state)
         print(vote_type)
