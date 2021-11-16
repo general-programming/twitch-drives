@@ -1,0 +1,27 @@
+.chat {
+    list-style: none;
+    padding: 0;
+    margin-left: 0 10px;
+    display: inline-block;
+    width: 100%;
+}
+
+.chat li {
+    word-wrap: break-word;
+}
+
+.chat li:before {
+    background-size: 1rem 1rem;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    content:" ";
+}
+
+.chat li.discord:before {
+    background-image: url(discord.png);
+}
+
+.chat li.twitch:before {
+    background-image: url(twitch.png);
+}
