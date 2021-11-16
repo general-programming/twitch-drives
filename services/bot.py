@@ -1,11 +1,12 @@
 import logging
 import os
+import random
 import sys
+import traceback
 
 import nextcord
-import random
-import traceback
 from nextcord.ext import commands
+
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.caractions.vote import VoteAction

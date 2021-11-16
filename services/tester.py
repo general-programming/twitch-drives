@@ -1,6 +1,6 @@
 import json
-import time
 import random
+import time
 
 from twitchdrives.common import get_redis
 

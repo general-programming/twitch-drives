@@ -1,6 +1,7 @@
 from twitchdrives.api.tesla import get_tesla
 from twitchdrives.common import get_aioredis
 
+
 class ActionBase:
     ACTION_NAME = None
 

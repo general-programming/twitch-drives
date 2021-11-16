@@ -1,6 +1,7 @@
 import asyncio
-from sanic import Sanic
 import json
+
+from sanic import Sanic
 
 from twitchdrives.common import get_aioredis
 

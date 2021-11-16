@@ -2,20 +2,22 @@
 
 import ast
 import asyncio
-from contextlib import asynccontextmanager
-import pkgutil
 import json
-import os
-import json
-from typing import List
-import time
 import logging
-import aiohttp
+import os
+import pkgutil
+import time
 import urllib
-from httpx import USE_CLIENT_DEFAULT
+from contextlib import asynccontextmanager
+from typing import List
+
+import aiohttp
 from authlib.integrations.httpx_client import AsyncOAuth2Client
+from httpx import USE_CLIENT_DEFAULT
+
 from twitchdrives.common import get_redis
-from twitchdrives.exceptions import VehicleError, VehicleAsleep, VehicleTimeout, VehicleInvalidShare
+from twitchdrives.exceptions import (VehicleAsleep, VehicleError,
+                                     VehicleInvalidShare, VehicleTimeout)
 
 logger = logging.getLogger(__name__)
 SSO_BASE_URL = "https://auth.tesla.com/"

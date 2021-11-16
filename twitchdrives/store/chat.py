@@ -1,6 +1,7 @@
 from twitchdrives.common import get_aioredis
 from twitchdrives.constants import MAX_MESSAGES
 
+
 class ChatStore:
     def __init__(self):
         self.redis = get_aioredis()
