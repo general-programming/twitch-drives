@@ -3,6 +3,8 @@ import os
 import bottom
 
 from twitchdrives.api.tesla import get_car
+from twitchdrives.caractions.navigation import NavigationAction
+from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare
 from twitchdrives.store.chat import ChatStore
 
 nick = os.environ["TWITCH_USER"]
@@ -75,6 +77,20 @@ async def message(nick: str, target: str, message: str, **kwargs):
                 version=car_details['vehicle_state']['car_version']
             )
             bot.send("PRIVMSG", target=target, message=output)
+    elif message.startswith("!navigate"):
+        try:
+            destination = message.split("!navigate", 2)[1]
+        except IndexError:
+            return
+        navigation = NavigationAction()
+
+        try:
+            await navigation.handle(destination)
+            reply = f"Navigating to '{destination}'"
+        except VehicleInvalidShare:
+            reply = f"'{destination}' is not a valid destination."
+
+        bot.send("PRIVMSG", target=target, message=reply)
 
 bot.loop.create_task(bot.connect())
 bot.loop.run_forever()
