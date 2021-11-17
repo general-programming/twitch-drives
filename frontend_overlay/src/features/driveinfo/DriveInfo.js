@@ -14,10 +14,10 @@ export function DriveInfo() {
     console.log(info);
 
     const shifters = [];
-    Object.keys(SHIFT_STATES).map(key => {
+    Object.keys(SHIFT_STATES).forEach(key => {
         let shiftName = SHIFT_STATES[key];
         const shiftClasses = [];
-        if (info.shift_state == key) {
+        if (info.shift_state === key) {
             shiftClasses.push(styles.active);
         }
         shifters.push(
