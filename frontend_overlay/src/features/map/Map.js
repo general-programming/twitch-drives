@@ -4,7 +4,6 @@ import {
     MapContainer,
     TileLayer,
     Marker,
-    Popup,
     useMap,
 } from "@monsonjeremy/react-leaflet";
 import styles from "./Map.module.css";
@@ -23,14 +22,7 @@ L.Icon.Default.mergeOptions({
 
 const mapboxToken =
     "pk.eyJ1IjoibmVwZWF0IiwiYSI6ImNrdnVmYWZrOTVhNGQydW51aTZ0eHVpYmcifQ.16at8c1_HQ2xUmMn1R3JBQ";
-const startPoint = [47.4720469201162, -122.22098071564105];
 const startZoom = 15;
-
-// if (isExisting(event.latitude) && isExisting(event.longitude)) {
-//     const location = new L.LatLng(event.latitude, event.longitude)
-//     map.panTo(location);
-//     mapMarker.setLatLng(location)
-// }
 
 function ChangeView({ latitude, longitude }) {
     const map = useMap();
