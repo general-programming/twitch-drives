@@ -17,7 +17,7 @@ export function BatteryInfo() {
             <p className={styles.percent}>
                 {info.battery}% | {info.range}mi
             </p>
-            <div className={styles.container}>
+            <div className={styles.barContainer}>
                 <div className={styles.barLeft} style={leftStyle}></div>
                 <div className={styles.barRight} style={rightStyle}></div>
             </div>
