@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     battery: 100,
@@ -7,13 +7,13 @@ const initialState = {
     latitude: 0,
     longitude: 0,
     speed: 0,
-    shift_state: 'P',
+    shift_state: "P",
     odometer: 0,
-    timestamp: 0
+    timestamp: 0,
 };
 
 export const driveInfoSlice = createSlice({
-    name: 'driveInfo',
+    name: "driveInfo",
     initialState,
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {

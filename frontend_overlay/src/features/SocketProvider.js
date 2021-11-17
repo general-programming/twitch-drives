@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { socketUpdate } from './driveinfo/driveInfoSlice';
-import { addMessage } from './chat/chatSlice';
+import React, { createContext, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { socketUpdate } from "./driveinfo/driveInfoSlice";
+import { addMessage } from "./chat/chatSlice";
 
 export default function SocketProvider({ children }) {
     const dispatch = useDispatch();
@@ -14,10 +14,10 @@ export default function SocketProvider({ children }) {
         };
         socket.onclose = (event) => {
             console.log("socket closed", event);
-            setSerial(x => x+1); // trigger re-render
+            setSerial((x) => x + 1); // trigger re-render
         };
 
-        socket.onmessage = event => {
+        socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.chat) {
                 dispatch(addMessage(data.chat));
@@ -30,4 +30,4 @@ export default function SocketProvider({ children }) {
     }, [serial]);
 
     return children;
-};
+}
