@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     messages: []
@@ -11,7 +11,7 @@ export const chatSlice = createSlice({
     reducers: {
         addMessage: (state, action) => {
             let message = action.payload;
-            if (state.messages.length == 10) {
+            if (state.messages.length === 10) {
                 state.messages.shift();
             }
             state.messages.push(message);
