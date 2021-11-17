@@ -3,6 +3,7 @@ import { Overlay } from './features/overlay/Overlay';
 import { DriveInfo } from './features/driveinfo/DriveInfo';
 import { BatteryInfo } from './features/batteryinfo/BatteryInfo';
 import { Chat } from './features/chat/Chat';
+import { Map } from './features/map/Map';
 import SocketProvider from './features/SocketProvider';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
                 <DriveInfo />
                 <BatteryInfo />
                 <Chat />
-                <Overlay />
+                <Map />
             </SocketProvider>
         </div>
     );
