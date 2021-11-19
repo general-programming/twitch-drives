@@ -3,34 +3,25 @@ import { selectDriveInfo } from "./driveInfoSlice";
 import styles from "./DriveInfo.module.css";
 
 const SHIFT_STATES = {
-    P: "park",
-    R: "reverse",
-    N: "neutral",
-    D: "drive",
+    P: "PARK",
+    R: "REVERSE",
+    N: "NEUTRAL",
+    D: "DRIVE",
 };
 
 export function DriveInfo() {
     const info = useSelector(selectDriveInfo);
     console.log(info);
 
-    const shifters = [];
-    Object.keys(SHIFT_STATES).forEach((key) => {
-        let shiftName = SHIFT_STATES[key];
-        const shiftClasses = [];
-        if (info.shift_state === key) {
-            shiftClasses.push(styles.active);
-        }
-        shifters.push(
-            <li key={key} name={shiftName} className={shiftClasses}>
-                {" "}
-                {shiftName.toUpperCase()}
-            </li>
-        );
-    });
-
     return (
         <section className={styles.info}>
-            <ul className={styles.shifter}>{shifters}</ul>
+            <ul className={styles.shifter}>
+                {Object.keys(SHIFT_STATES).map((key) => 
+                    <li key={key} name={shiftName} className={info.shift_state === key ? styles.active : null}>
+                        {SHIFT_STATES[key]}
+                    </li>
+                )}
+            </ul>
             <div className={styles.speedInfo}>
                 <p id="speed" className={styles.speed}>
                     {info.speed}
