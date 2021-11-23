@@ -32,8 +32,9 @@ class VehicleGrabber:
         async for event in vehicle.stream():
             await self.push_data("socket", event)
 
-    async def push_data(self, event_source: str, event: dict):
-        await self.redis.lpush("tesla:events:" + event_source, json.dumps(event))
+    async def push_data(self, event_source: str, event: dict, save: bool = True):
+        if save:
+            await self.redis.lpush("tesla:events:" + event_source, json.dumps(event))
 
         to_push = {"_event_source": event_source}
 
