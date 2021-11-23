@@ -1,5 +1,5 @@
 from twitchdrives.api.tesla import get_tesla
-from twitchdrives.common import get_aioredis
+from twitchdrives.common import get_aioredis, ctx_aioredis
 
 
 class ActionBase:
@@ -11,10 +11,11 @@ class ActionBase:
     async def get_state(self):
         state = {}
 
-        global_state = await self.redis.hgetall("tesla:state:global")
-        state.update(global_state or {})
+        with ctx_aioredis() as redis:
+            global_state = await redis.hgetall("tesla:state:global")
+            state.update(global_state or {})
 
-        action_state = await self.redis.hgetall("tesla:state:" + self.ACTION_NAME)
-        state.update(action_state or {})
+            action_state = await redis.hgetall("tesla:state:" + self.ACTION_NAME)
+            state.update(action_state or {})
 
         return state
