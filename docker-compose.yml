@@ -1,6 +1,29 @@
-version: "3.9"  # optional since v1.27.0
+version: "3.7"
 services:
   redis:
     image: redis:alpine
     volumes:
       - ./data/redis:/data
+  frontend:
+    image: twitchdrives
+    build: .
+    command: sanic -d -H 0.0.0.0 service_overlay.app
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis
+    # port 8000
+  discordbot:
+    image: twitchdrives
+    build: .
+    command: python services/bot.py
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis
+  # twitchbot:
+  #   image: twitchdrives
+  #   build: .
+  #   command: python services/twitchbot.py
+  # grabber:
+  #   image: twitchdrives
+  #   build: .
+  #   command: python service_grabber

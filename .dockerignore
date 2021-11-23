@@ -1,0 +1,8 @@
+**/node_modules
+**/__pycache__
+**/.direnv
+**/build
+**/private
+**/data
+.env
+.envrc
