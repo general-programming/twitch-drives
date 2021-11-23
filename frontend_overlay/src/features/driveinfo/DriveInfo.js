@@ -16,8 +16,8 @@ export function DriveInfo() {
     return (
         <section className={styles.info}>
             <ul className={styles.shifter}>
-                {Object.keys(SHIFT_STATES).map((key) => 
-                    <li key={key} name={shiftName} className={info.shift_state === key ? styles.active : null}>
+                {Object.keys(SHIFT_STATES).map((key) =>
+                    <li key={key} name={SHIFT_STATES[key]} className={info.shift_state === key ? styles.active : null}>
                         {SHIFT_STATES[key]}
                     </li>
                 )}
