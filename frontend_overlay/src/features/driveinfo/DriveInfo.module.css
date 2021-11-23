@@ -1,0 +1,44 @@
+.info {
+  padding: 25px;
+  text-align: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.info .speed,
+.info .unit {
+  margin: 0;
+  font-weight: 400;
+}
+
+.speedInfo {
+  width: 200px;
+  align-self: center;
+}
+
+.info .speed {
+  font-size: 5.5rem;
+}
+
+.info .unit {
+  font-size: 1.5rem;
+}
+
+.shifter {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 0;
+  margin-top: 15px;
+  margin-right: 30px;
+}
+
+.shifter .active {
+  font-weight: bold;
+  color: #004cff;
+}
+
+.shifter li {
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}

@@ -1,0 +1,10 @@
+body {
+  font-family: Montserrat, Proxima Nova;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.85);
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
