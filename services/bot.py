@@ -10,7 +10,7 @@ from nextcord.ext import commands
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.caractions.vote import VoteAction
-from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare
+from twitchdrives.exceptions import CommandCooldown, VehicleAsleep, VehicleInvalidShare
 from twitchdrives.store.chat import ChatStore
 
 logging.basicConfig(level=logging.INFO)
@@ -124,6 +124,8 @@ async def navigate(ctx, *args):
         reply = f"Navigating to '{location}'"
     except VehicleInvalidShare:
         reply = f"'{location}' is not a valid destination."
+    except CommandCooldown as e:
+        reply = f"Command is on cooldown, pls hold on for {e.cooldown} seconds!"
 
     await ctx.send(nextcord.utils.escape_mentions(reply))
 

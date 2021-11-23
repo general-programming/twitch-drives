@@ -14,3 +14,9 @@ class VehicleTimeout(VehicleError):
 
 class VehicleInvalidShare(VehicleError):
     pass
+
+
+class CommandCooldown(Exception):
+    def __init__(self, cooldown: int):
+        super().__init__()
+        self.cooldown = cooldown

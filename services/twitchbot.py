@@ -4,7 +4,7 @@ from twitchio.ext import commands
 
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
-from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare
+from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare, CommandCooldown
 from twitchdrives.store.chat import ChatStore
 
 nick = os.environ["TWITCH_USER"]
@@ -78,6 +78,8 @@ class Bot(commands.Bot):
             reply = f"Navigating to '{location}'"
         except VehicleInvalidShare:
             reply = f"'{location}' is not a valid destination."
+        except CommandCooldown as e:
+            reply = f"Command is on cooldown, pls hold on for {e.cooldown} seconds!"
 
         await ctx.send(reply)
 
