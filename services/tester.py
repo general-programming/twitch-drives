@@ -13,7 +13,7 @@ while True:
             {
                 "speed": random.randint(0, 420),
                 "shift_state": random.choice("PRND"),
-                "battery": random.randint(0, 101),
+                "battery": random.randint(0, 100),
                 "range": random.randint(0, 300),
             }
         ),
