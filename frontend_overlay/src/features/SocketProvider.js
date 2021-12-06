@@ -8,7 +8,7 @@ export default function SocketProvider({ children }) {
     const [serial, setSerial] = useState(0);
 
     useEffect(() => {
-        let socket = new WebSocket("ws://79.110.170.251:8000/stream");
+        let socket = new WebSocket("wss://twitchla.generalprogramming.org/stream");
         socket.onopen = (event) => {
             console.log("socket opened", event);
         };
