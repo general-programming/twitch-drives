@@ -7,6 +7,7 @@ import traceback
 import nextcord
 from nextcord.ext import commands
 
+from twitchdrives.common import ctx_aioredis
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.caractions.vote import VoteAction
@@ -148,6 +149,23 @@ async def wakeup(ctx):
     async with get_car() as car:
         await car.wake_up()
     await ctx.send("Car is awake.")
+
+
+@client.command(help="Toggles nerf status for commands.")
+async def nerf_toggle(ctx):
+    nerf_key = "tesla:nerf"
+    if ctx.author.id == 66153853824802816:
+        async with ctx_aioredis() as redis:
+            if await redis.exists(nerf_key):
+                await redis.delete(nerf_key)
+                reply = "Enabled car commands."
+            else:
+                await redis.set(nerf_key, "1")
+                reply = "Disabled car commands."
+    else:
+        reply = "pls mercy"
+
+    await ctx.send(reply)
 
 
 client.run(os.environ["DISCORD_TOKEN"])
