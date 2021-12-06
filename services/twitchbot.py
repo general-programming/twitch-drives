@@ -2,6 +2,7 @@ import os
 
 from twitchio.ext import commands
 
+from twitchdrives.common import ctx_aioredis
 from twitchdrives.api.tesla import get_car
 from twitchdrives.caractions.navigation import NavigationAction
 from twitchdrives.exceptions import VehicleAsleep, VehicleInvalidShare, CommandCooldown
@@ -48,6 +49,15 @@ class Bot(commands.Bot):
         # We must let the bot know we want to handle and invoke our commands...
         await self.handle_commands(message)
 
+    async def check_state(self):
+        is_ok = True
+
+        async with ctx_aioredis() as redis:
+            if await redis.exists("tesla:nerf"):
+                is_ok = False
+
+        return is_ok
+
     @commands.command()
     async def info(self, ctx: commands.Context):
         async with get_car() as car:
@@ -70,6 +80,9 @@ class Bot(commands.Bot):
 
     @commands.command()
     async def navigate(self, ctx: commands.Context, *args):
+        if not await self.check_state():
+            return
+
         location = " ".join(args)
         navigation = NavigationAction()
 
